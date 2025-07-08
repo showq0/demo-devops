@@ -15,4 +15,13 @@ jobs:
           cache: true
       - name: run project
         run: |
-          python main.py
+          python3 main.py & 
+          SERVER_PID=$!
+          sleep 5
+      - name: Health check
+        run: |
+          curl --fail http://localhost:3000/health
+          echo "Health check passed."
+      - name: Kill server
+        run: |
+          kill $SERVER_PID
