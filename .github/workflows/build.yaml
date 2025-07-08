@@ -13,5 +13,6 @@ jobs:
         with:
           python-version: "3.13"
           cache: true
+      - name: run project
         run: |
           python main.py
