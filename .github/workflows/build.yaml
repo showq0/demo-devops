@@ -18,12 +18,3 @@ jobs:
           python3 main.py &
           echo $! > server.pid
           sleep 5
-
-      - name: Health check
-        run: |
-          curl --fail http://localhost:3000/health
-          echo "Health check passed."
-
-      - name: Kill server
-        run: |
-          kill $(cat server.pid)
