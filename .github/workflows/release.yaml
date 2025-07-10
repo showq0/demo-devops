@@ -1,0 +1,31 @@
+on:
+  push:
+    tags:
+      - "**"
+
+name: Release
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: docker login -u $DOCKER_USERNAME  -p $DOCKER_PASSWORD
+
+      - name: Build Docker Image
+        run: |
+          version=${GITHUB_REF##*/}
+          docker build . -t $DOCKER_IMAGE:$version
+
+      - name: Push Docker image
+        run: |
+          version=${GITHUB_REF##*/}
+          docker push $DOCKER_IMAGE:$version
