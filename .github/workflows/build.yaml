@@ -15,7 +15,6 @@ jobs:
           - 3.12
           - 3.13
     runs-on: ${{matrix.os}}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,17 +25,20 @@ jobs:
           python-version: "3.11"
 
       - name: Run project
+        shell: bash
         run: |
           python3 main.py &
           echo $! > server.pid
           sleep 5
 
       - name: Health check
+        shell: bash
         run: |
           curl --fail http://localhost:3000/health
           echo "Health check passed."
 
       - name: Kill server
+        shell: bash
         run: |
           kill $(cat server.pid)
 
