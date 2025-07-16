@@ -29,6 +29,7 @@ jobs:
         run: |
           version=${GITHUB_REF##*/}
           docker push $DOCKER_IMAGE:$version
+          echo "\`docker run  $DOCKER_IMAGE:$version\`" > release
 
   release-asset:
     strategy:
@@ -60,6 +61,7 @@ jobs:
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
+          body_path: release
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
