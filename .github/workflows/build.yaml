@@ -22,16 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
-
-      - name: Build binary
-        run: |
-          pyinstaller --onefile --name="myapp-$RUNNER_OS" main.py
+          python-version: ${{matrix.python-virsion}}
 
       - name: Run project
         shell: bash
